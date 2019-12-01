@@ -242,7 +242,7 @@ func (s *solveState) clone() *solveState {
 	}
 }
 
-func (s *solveState) findFirstGrey() (r, c int) {
+func (s *solveState) findFirstGreyCell() (r, c int) {
 	for r := 0; r < s.g.n; r++ {
 		for c := 0; c < s.g.m; c++ {
 			if s.g.g[r][c] == greyCell {
@@ -254,14 +254,14 @@ func (s *solveState) findFirstGrey() (r, c int) {
 }
 
 func (s *solveState) setFirstGreyColorTo(clr CellColor) {
-	r, c := s.findFirstGrey()
+	r, c := s.findFirstGreyCell()
 	s.g.g[r][c] = clr
 	s.nGreys--
 	s.rowSols[r] = pruneSols(s.rowSols[r], c, clr)
 	s.colSols[c] = pruneSols(s.colSols[c], r, clr)
 }
 
-func (s *solveState) deduce() {
+func (s *solveState) deduceGridCellColors() {
 	hasMod := true
 	// as long as we have modified rows or columns
 	for hasMod && s.nGreys > 0 {
@@ -310,7 +310,7 @@ func (s *solveState) deduce() {
 }
 
 func (s *solveState) doSolve(sols []*CellGrid) []*CellGrid {
-	s.deduce()
+	s.deduceGridCellColors()
 	if s.nGreys == 0 {
 		return append(sols, s.g)
 	}
