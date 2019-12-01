@@ -33,3 +33,5 @@ cells has been determined for all solutions.
 
 
 
+This program was implemented as a [response](https://stackoverflow.com/a/59126550/75517) to a stack 
+overflow question. I had a lot of fun finding and implementing the algorithm. 
