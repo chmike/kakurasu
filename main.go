@@ -264,7 +264,7 @@ func (s *solveState) setFirstGreyColorTo(clr CellColor) {
 func (s *solveState) deduce() {
 	hasMod := true
 	// as long as we have modified rows or columns
-	for hasMod {
+	for hasMod && s.nGreys > 0 {
 		hasMod = false
 		// for each row
 		for r := 0; r < s.g.n; r++ {
