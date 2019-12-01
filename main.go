@@ -262,27 +262,20 @@ func (s *solveState) setFirstGreyColorTo(clr CellColor) {
 }
 
 func (s *solveState) deduceGridCellColors() {
-	hasMod := true
-	// as long as we have modified rows or columns
-	for hasMod && s.nGreys > 0 {
-		hasMod = false
+	hasSolved := true
+	// as long as we have solved new cells and we have not solved all cells
+	for hasSolved && s.nGreys > 0 {
+		hasSolved = false
 		// for each row
 		for r := 0; r < s.g.n; r++ {
 			sol := deduceColorsFormSols(s.rowSols[r])
 			for c := 0; c < s.g.m; c++ {
-				if sol[c] == greyCell {
-					continue
-				}
-				if s.g.g[r][c] == greyCell {
+				if sol[c] != greyCell && s.g.g[r][c] == greyCell {
 					// we solved a new cell
-					hasMod = true
+					hasSolved = true
 					s.nGreys--
 					s.g.g[r][c] = sol[c]
 					s.colSols[c] = pruneSols(s.colSols[c], r, sol[c])
-				} else {
-					if s.g.g[r][c] != sol[c] {
-						panic("matrix and solution mismatch")
-					}
 				}
 			}
 		}
@@ -290,19 +283,12 @@ func (s *solveState) deduceGridCellColors() {
 		for c := 0; c < s.g.m; c++ {
 			sol := deduceColorsFormSols(s.colSols[c])
 			for r := 0; r < s.g.n; r++ {
-				if sol[r] == greyCell {
-					continue
-				}
-				if s.g.g[r][c] == greyCell {
+				if sol[r] != greyCell && s.g.g[r][c] == greyCell {
 					// we solved a new cell
-					hasMod = true
+					hasSolved = true
 					s.nGreys--
 					s.g.g[r][c] = sol[r]
 					s.rowSols[r] = pruneSols(s.rowSols[r], c, sol[r])
-				} else {
-					if s.g.g[r][c] != sol[r] {
-						panic("matrix and solution mismatch")
-					}
 				}
 			}
 		}
