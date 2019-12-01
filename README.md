@@ -7,4 +7,5 @@ of the puzzle is to determine from the sums which cell is black and which cell i
 
 The image bellow shows a solved kakurasu. 
 
-![Kakurasu example](https://gitea.meessen.net/meessen/kakurasu/src/branch/master/Kakurasu_solution.jpg)
+![Kakurasu example](https://gitea.meessen.net/meessen/kakurasu/raw/branch/master/Kakurasu_solution.jpg)
+
