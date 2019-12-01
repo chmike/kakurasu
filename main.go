@@ -21,7 +21,7 @@ const (
 // CellLine is a line of CellColor.
 type CellLine []CellColor
 
-// CellGrid is an n rows by m columns grid of CollColor.
+// CellGrid is an n rows by m columns grid of CellColor.
 type CellGrid struct {
 	n, m int
 	g    []CellLine
@@ -188,7 +188,7 @@ func deduceColorsFormSols(sols []CellLine) CellLine {
 }
 
 // eliminate solutions incompatible with black or white color c at index k.
-func filterSols(sols []CellLine, k int, c CellColor) []CellLine {
+func pruneSols(sols []CellLine, k int, c CellColor) []CellLine {
 	var j int
 	for i := range sols {
 		if sols[i][k] == c {
@@ -257,8 +257,8 @@ func (s *solveState) setFirstGreyColorTo(clr CellColor) {
 	r, c := s.findFirstGrey()
 	s.g.g[r][c] = clr
 	s.nGreys--
-	s.rowSols[r] = filterSols(s.rowSols[r], c, clr)
-	s.colSols[c] = filterSols(s.colSols[c], r, clr)
+	s.rowSols[r] = pruneSols(s.rowSols[r], c, clr)
+	s.colSols[c] = pruneSols(s.colSols[c], r, clr)
 }
 
 func (s *solveState) deduce() {
@@ -278,7 +278,7 @@ func (s *solveState) deduce() {
 					hasMod = true
 					s.nGreys--
 					s.g.g[r][c] = sol[c]
-					s.colSols[c] = filterSols(s.colSols[c], r, sol[c])
+					s.colSols[c] = pruneSols(s.colSols[c], r, sol[c])
 				} else {
 					if s.g.g[r][c] != sol[c] {
 						panic("matrix and solution mismatch")
@@ -298,7 +298,7 @@ func (s *solveState) deduce() {
 					hasMod = true
 					s.nGreys--
 					s.g.g[r][c] = sol[r]
-					s.rowSols[r] = filterSols(s.rowSols[r], c, sol[r])
+					s.rowSols[r] = pruneSols(s.rowSols[r], c, sol[r])
 				} else {
 					if s.g.g[r][c] != sol[r] {
 						panic("matrix and solution mismatch")
